@@ -1,3 +1,7 @@
+/**
+ * References view-source:http://snook.ca/technical/colour_contrast/colour.html
+ */
+
 function parseRGB(val) {
     if (val.length == 7 || val.length == 4) {
         val = val.substr(1);
