@@ -1,0 +1,38 @@
+function parseRGB(val) {
+    if (val.length == 7 || val.length == 4) {
+        val = val.substr(1);
+    }
+	
+    var length = 2;
+    if (val.length == 3) length = 1;
+    var result = [];
+    result[0] = parseInt(val.substr(0, length), 16);
+    result[1] = parseInt(val.substr(1 * length, length), 16);
+    result[2] = parseInt(val.substr(2 * length, length), 16);
+
+    return result;
+}
+
+function isCompliant(bRGBStr, fRGBStr) {
+    var bRGB = parseRGB(bRGBStr);
+    var fRGB = parseRGB(fRGBStr);
+
+    var brightnessThreshold = 125;
+    var colorThreshold = 500;
+
+    var bY = ((bRGB[0] * 299) + (bRGB[1] * 587) + (bRGB[2] * 114)) / 1000;
+    var fY = ((fRGB[0] * 299) + (fRGB[1] * 587) + (fRGB[2] * 114)) / 1000;
+    var brightnessDifference = Math.abs(bY - fY);
+
+    var colorDifference = (Math.max(bRGB[0], fRGB[0]) - Math.min(bRGB[0], fRGB[0])) +
+        (Math.max(bRGB[1], fRGB[1]) - Math.min(bRGB[1], fRGB[1])) +
+        (Math.max(bRGB[2], fRGB[2]) - Math.min(bRGB[2], fRGB[2]));
+
+    if ((brightnessDifference >= brightnessThreshold) && (colorDifference >= colorThreshold)) {
+        return 2;
+    } else if ((brightnessDifference >= brightnessThreshold) || (colorDifference >= colorThreshold)) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
